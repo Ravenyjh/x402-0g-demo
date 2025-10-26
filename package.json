@@ -1,0 +1,30 @@
+{
+  "name": "x402-0g-chain-demo",
+  "version": "1.0.0",
+  "description": "Complete x402 payment system demo on 0g Chain",
+  "private": true,
+  "workspaces": [
+    "facilitator",
+    "resource-server",
+    "client"
+  ],
+  "scripts": {
+    "install": "npm install --workspaces",
+    "dev:facilitator": "npm run dev --workspace=facilitator",
+    "dev:server": "npm run dev --workspace=resource-server",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:all": "concurrently \"npm run dev:facilitator\" \"npm run dev:server\"",
+    "test": "npm test --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["x402", "0g-chain", "payment", "demo", "USDC"],
+  "author": "0g Chain Demo",
+  "license": "MIT"
+}

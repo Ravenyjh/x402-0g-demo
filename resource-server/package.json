@@ -1,0 +1,25 @@
+{
+  "name": "x402-0g-resource-server",
+  "version": "1.0.0",
+  "description": "Resource server with x402 payment integration on 0g Chain",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "test": "echo \"Add tests here\""
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "x402-express": "link:"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0"
+  }
+}
