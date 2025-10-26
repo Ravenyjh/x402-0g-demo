@@ -2,20 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import { createWalletClient, http, defineChain } from 'viem';
+import { createWalletClient, createPublicClient, http, defineChain } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import { settle, verify } from 'ravenyjh-x402/facilitator';
-import { 
-  PaymentPayload, 
-  PaymentRequirements, 
-  PaymentPayloadSchema, 
-  PaymentRequirementsSchema, 
-  createConnectedClient, 
-  createSigner,
-  SupportedEVMNetworks,
-  Signer,
-  ConnectedClient
-} from 'ravenyjh-x402/types';
+
+// Import wallet types and functions from the package
+type Signer = any;
+type ConnectedClient = any;
 
 // Load environment variables
 dotenv.config();
@@ -42,6 +35,88 @@ const zeroGChain = defineChain({
     },
   },
 });
+
+// Define supported EVM networks for 0g Chain
+const SupportedEVMNetworks = ['0g-chain', 'base', 'base-sepolia', 'polygon', 'avalanche'];
+
+// Simple client creation using viem for 0g chain
+function createConnectedClient(network: string): ConnectedClient {
+  if (network === '0g-chain') {
+    // For 0g chain, create a simple viem public client
+    const client = createPublicClient({
+      chain: zeroGChain,
+      transport: http()
+    });
+    
+    // Add any missing methods that might be expected
+    const extendedClient = {
+      ...client,
+      verifyTypedData: async (params: any) => {
+        const { verifyTypedData } = await import('viem');
+        return verifyTypedData({
+          address: params.address,
+          domain: params.domain,
+          types: params.types,
+          primaryType: params.primaryType,
+          message: params.message,
+          signature: params.signature,
+        });
+      },
+      // Add transaction-related methods
+      waitForTransactionReceipt: client.waitForTransactionReceipt.bind(client),
+      getTransaction: client.getTransaction.bind(client),
+      getTransactionReceipt: client.getTransactionReceipt.bind(client)
+    };
+    
+    return extendedClient;
+  }
+  throw new Error(`Unsupported network: ${network}`);
+}
+
+async function createSigner(network: string, privateKey: string): Promise<Signer> {
+  if (network === '0g-chain') {
+    // For 0g chain, create both wallet and public clients
+    const account = privateKeyToAccount(privateKey as `0x${string}`);
+    const walletClient = createWalletClient({
+      account,
+      chain: zeroGChain,
+      transport: http()
+    });
+    
+    const publicClient = createPublicClient({
+      chain: zeroGChain,
+      transport: http()
+    });
+    
+    // Create a combined client with methods from both
+    const extendedClient = {
+      ...walletClient,
+      // Add public client methods
+      readContract: publicClient.readContract.bind(publicClient),
+      getBalance: publicClient.getBalance.bind(publicClient),
+      getBlockNumber: publicClient.getBlockNumber.bind(publicClient),
+      call: publicClient.call.bind(publicClient),
+      waitForTransactionReceipt: publicClient.waitForTransactionReceipt.bind(publicClient),
+      getTransaction: publicClient.getTransaction.bind(publicClient),
+      getTransactionReceipt: publicClient.getTransactionReceipt.bind(publicClient),
+      // Add verifyTypedData method
+      verifyTypedData: async (params: any) => {
+        const { verifyTypedData } = await import('viem');
+        return verifyTypedData({
+          address: account.address,
+          domain: params.domain,
+          types: params.types,
+          primaryType: params.primaryType,
+          message: params.message,
+          signature: params.signature,
+        });
+      }
+    };
+    
+    return extendedClient;
+  }
+  throw new Error(`Unsupported network: ${network}`);
+}
 
 // Initialize Express app
 const app = express();

@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import { paymentMiddleware } from 'x402-express';
+import { paymentMiddleware } from 'ravenyjh-x402-express';
 
 // Load environment variables
 dotenv.config();
@@ -28,7 +28,7 @@ console.log(`🔗 Facilitator URL: ${FACILITATOR_URL}`);
 
 // Apply x402 payment middleware
 app.use(
-  paymentMiddleware(RECEIVER_ADDRESS, {
+  paymentMiddleware(RECEIVER_ADDRESS as `0x${string}`, {
     // Weather API - $0.01 per request
     '/api/weather': {
       price: '$0.01',
@@ -53,7 +53,7 @@ app.use(
       network: '0g-chain'
     }
   }, {
-    url: FACILITATOR_URL
+    url: FACILITATOR_URL as `${string}://${string}`
   })
 );
 

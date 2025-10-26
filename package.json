@@ -9,15 +9,16 @@
     "client"
   ],
   "scripts": {
-    "dev:facilitator": "npm run dev --workspace=facilitator",
-    "dev:server": "npm run dev --workspace=resource-server",
-    "dev:client": "npm run dev --workspace=client",
-    "dev:all": "concurrently \"npm run dev:facilitator\" \"npm run dev:server\"",
+    "dev:facilitator": "cd facilitator && ../node_modules/.bin/tsx src/index.ts",
+    "dev:server": "cd resource-server && ../node_modules/.bin/tsx src/index.ts",
+    "dev:client": "cd client && ../node_modules/.bin/tsx src/index.ts",
+    "dev:all": "concurrently \"pnpm run dev:facilitator\" \"pnpm run dev:server\"",
     "test": "npm test --workspaces"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "concurrently": "^8.2.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.0.0"
   },
   "engines": {
@@ -33,6 +34,12 @@
   "author": "0g Chain Demo",
   "license": "MIT",
   "dependencies": {
-    "ravenyjh-x402": "^0.6.6"
+    "axios": "^1.12.2",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "ravenyjh-x402": "^0.6.6",
+    "ravenyjh-x402-axios": "0.6.6",
+    "ravenyjh-x402-express": "0.6.5",
+    "viem": "^2.38.4"
   }
 }

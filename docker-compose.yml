@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  facilitator:
+    build:
+      context: .
+      dockerfile: Dockerfile.facilitator
+    container_name: x402-facilitator
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+      - FACILITATOR_PRIVATE_KEY=${FACILITATOR_PRIVATE_KEY}
+    volumes:
+      - ./facilitator/.env:/app/facilitator/.env:ro
+    env_file:
+      - .env
+    networks:
+      - x402-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  resource-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.resource-server
+    container_name: x402-resource-server
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - RECEIVER_ADDRESS=${RECEIVER_ADDRESS}
+      - FACILITATOR_URL=http://facilitator:3001
+    volumes:
+      - ./resource-server/.env:/app/resource-server/.env:ro
+    env_file:
+      - .env
+    networks:
+      - x402-network
+    restart: unless-stopped
+    depends_on:
+      facilitator:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  x402-network:
+    driver: bridge
+
+volumes:
+  node_modules:

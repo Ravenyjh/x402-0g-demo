@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "helmet": "^7.1.0",
     "dotenv": "^16.3.1",
-    "x402-express": "^0.6.5",
+    "x402-express": "npm:ravenyjh-x402-express@0.6.5",
     "ravenyjh-x402": "^0.6.6",
     "viem": "^2.21.1"
   },

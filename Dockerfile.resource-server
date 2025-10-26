@@ -1,0 +1,34 @@
+FROM node:18-alpine
+
+# Install wget for healthcheck
+RUN apk add --no-cache wget
+
+# Set working directory
+WORKDIR /app/resource-server
+
+# Copy package.json first for better caching
+COPY resource-server/package.json ./
+
+# Install pnpm
+RUN npm install -g pnpm
+
+# Install dependencies
+RUN pnpm install
+
+# Copy source code
+COPY resource-server/src ./src
+COPY resource-server/tsconfig.json ./
+
+# Build the application
+RUN pnpm run build
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nodeuser -u 1001
+RUN chown -R nodeuser:nodejs /app/resource-server/dist
+
+USER nodeuser
+
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]
