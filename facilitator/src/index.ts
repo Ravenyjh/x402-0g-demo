@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { createWalletClient, http, defineChain } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
-import { settle, verify } from 'x402/facilitator';
+import { settle, verify } from 'ravenyjh-x402/facilitator';
 import { 
   PaymentPayload, 
   PaymentRequirements, 
@@ -15,7 +15,7 @@ import {
   SupportedEVMNetworks,
   Signer,
   ConnectedClient
-} from 'x402/types';
+} from 'ravenyjh-x402/types';
 
 // Load environment variables
 dotenv.config();

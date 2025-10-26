@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  x402-axios: link:../../x402/typescript/packages/x402-axios
-
 importers:
 
   .:
@@ -26,9 +23,6 @@ importers:
       viem:
         specifier: ^2.21.1
         version: 2.38.4(typescript@5.9.3)
-      x402-axios:
-        specifier: link:../../x402/typescript/packages/x402-axios
-        version: link:../../x402/typescript/packages/x402-axios
     devDependencies:
       '@types/node':
         specifier: ^20.0.0

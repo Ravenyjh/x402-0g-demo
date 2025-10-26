@@ -1,5 +1,9 @@
 import { defineChain } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
+import dotenv from 'dotenv';
+
+// Load environment variables first
+dotenv.config();
 
 // 0g Chain configuration
 export const zeroGChain = defineChain({

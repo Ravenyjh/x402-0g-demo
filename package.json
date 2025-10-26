@@ -9,7 +9,6 @@
     "client"
   ],
   "scripts": {
-    "install": "npm install --workspaces",
     "dev:facilitator": "npm run dev --workspace=facilitator",
     "dev:server": "npm run dev --workspace=resource-server",
     "dev:client": "npm run dev --workspace=client",
@@ -17,14 +16,23 @@
     "test": "npm test --workspaces"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "concurrently": "^8.2.2",
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
   },
-  "keywords": ["x402", "0g-chain", "payment", "demo", "USDC"],
+  "keywords": [
+    "x402",
+    "0g-chain",
+    "payment",
+    "demo",
+    "USDC"
+  ],
   "author": "0g Chain Demo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "ravenyjh-x402": "^0.6.6"
+  }
 }

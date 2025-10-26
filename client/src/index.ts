@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
-import path from 'path';
-dotenv.config({ path: path.join(__dirname, '../.env') });
 
 import axios from 'axios';
 import { createWalletClient, http } from 'viem';
-import { withPaymentInterceptor } from 'x402-axios';
+import { withPaymentInterceptor } from 'ravenyjh-x402-axios';
 import { config, clientAccount, zeroGChain } from './config';
 
 async function runAxiosDemo() {
@@ -34,29 +31,6 @@ async function runAxiosDemo() {
     const weatherResponse = await apiClient.get('/api/weather?city=Shanghai');
     console.log('✅ Weather data:', weatherResponse.data);
     console.log('');
-
-    // // Test 2: AI Assistant ($0.05)
-    // console.log('🤖 Testing AI Assistant ($0.05)...');
-    // const aiResponse = await apiClient.post('/api/ai/premium', {
-    //   prompt: 'Explain blockchain payments in simple terms'
-    // });
-    // console.log('✅ AI response:', aiResponse.data);
-    // console.log('');
-
-    // // Test 3: File Download ($0.02)
-    // console.log('📁 Testing File Download ($0.02)...');
-    // const fileResponse = await apiClient.get('/api/files/download/report-2024');
-    // console.log('✅ File data:', fileResponse.data);
-    // console.log('');
-
-    // // Test 4: Analytics ($0.03)
-    // console.log('📊 Testing Analytics API ($0.03)...');
-    // const analyticsResponse = await apiClient.get('/api/analytics?metric=revenue');
-    // console.log('✅ Analytics data:', analyticsResponse.data);
-    // console.log('');
-
-    // console.log('🎉 All tests completed successfully!');
-    // console.log('💰 Total spent: $0.11 USDC.e on 0g Chain');
 
   } catch (error) {
     if (axios.isAxiosError(error)) {
